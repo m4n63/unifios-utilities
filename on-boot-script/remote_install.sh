@@ -12,6 +12,9 @@ case "$(ubnt-device-info firmware || true)" in
 3*)
   DATA_DIR="/data"
   ;;
+4*)
+  DATA_DIR="/data"
+  ;;
 *)
   echo "ERROR: No persistent storage found." 1>&2
   exit 1
@@ -73,7 +76,7 @@ udm_model() {
       echo "udm"
     fi
     ;;
-  "UniFi Dream Router")
+  "UniFi Dream Router" | "UniFi Express")
     echo "udr"
     ;;
   *)
