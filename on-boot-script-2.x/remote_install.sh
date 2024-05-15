@@ -4,20 +4,16 @@
 DATA_DIR="/data"
 case "$(ubnt-device-info firmware || true)" in
 1*)
-  DATA_DIR="/mnt/data"
-  ;;
-2*)
-  DATA_DIR="/data"
-  ;;
-3*)
-  DATA_DIR="/data"
-  ;;
+    DATA_DIR="/mnt/data"
+    ;;
+2* | 3* | 4*)
+    DATA_DIR="/data"
+    ;;
 *)
-  echo "ERROR: No persistent storage found." 1>&2
-  exit 1
-  ;;
+    echo "ERROR: No persistent storage found." 1>&2
+    exit 1
+    ;;
 esac
-
 # A change in the name udm-boot would need to be reflected as well in systemctl calls.
 SYSTEMCTL_PATH="/etc/systemd/system/udm-boot.service"
 SYMLINK_SYSTEMCTL="/etc/systemd/system/multi-user.target.wants/udm-boot.service"
@@ -75,6 +71,9 @@ udm_model() {
     ;;
   "UniFi Dream Router")
     echo "udr"
+    ;;
+  "UniFi Dream Machine Pro Max")
+    echo "udmpromax"
     ;;
   *)
     echo "unknown"
@@ -180,7 +179,7 @@ udmlegacy | udmprolegacy)
 
   echo "UDM Boot Script installed"
   ;;
-udr | udmse | udm | udmpro)
+udr | udmse | udm | udmpro | udmpromax)
   echo "$(ubnt-device-info model) version $(ubnt-device-info firmware) was detected"
   echo "Installing on-boot script..."
   depends_on systemctl
